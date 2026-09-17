@@ -886,3 +886,245 @@ function showAlert(message, type) {
     }, 5000);
   }
 }
+// AI CHATBOT
+// ======================================================
+
+const openChatbotBtn = document.getElementById("openChatbotBtn");
+const closeChatbotBtn = document.getElementById("closeChatbotBtn");
+const chatbotContainer = document.getElementById("chatbotContainer");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const sendChatBtn = document.getElementById("sendChatBtn");
+
+
+// Show chatbot button only when patient is logged in
+function updateChatbotVisibility() {
+
+    if (authToken) {
+
+        openChatbotBtn.style.display = "block";
+
+    } else {
+
+        openChatbotBtn.style.display = "none";
+        chatbotContainer.style.display = "none";
+
+    }
+
+}
+
+
+// Open chatbot
+openChatbotBtn.addEventListener("click", () => {
+
+    chatbotContainer.style.display = "block";
+    openChatbotBtn.style.display = "none";
+
+    chatInput.focus();
+
+});
+
+
+// Close chatbot
+closeChatbotBtn.addEventListener("click", () => {
+
+    chatbotContainer.style.display = "none";
+    openChatbotBtn.style.display = "block";
+
+});
+
+
+// Add message to chat window
+function addChatMessage(message, sender) {
+
+    const messageDiv = document.createElement("div");
+
+    if (sender === "user") {
+
+        messageDiv.style.cssText = `
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            margin-left: 40px;
+            text-align: right;
+        `;
+
+    } else {
+
+        messageDiv.style.cssText = `
+            background: #e9ecef;
+            color: #212529;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            margin-right: 40px;
+        `;
+
+    }
+
+    messageDiv.textContent = message;
+
+    chatMessages.appendChild(messageDiv);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+}
+
+
+// Send message
+async function sendChatMessage() {
+
+    const message = chatInput.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+    if (!authToken) {
+
+        addChatMessage("Please login first.", "bot");
+
+        return;
+    }
+
+
+    // Show user's message
+    addChatMessage(message, "user");
+
+    chatInput.value = "";
+
+    sendChatBtn.disabled = true;
+    chatInput.disabled = true;
+
+
+    // Loading message
+    const loadingMessage = document.createElement("div");
+
+    loadingMessage.textContent = "AI is thinking...";
+
+    loadingMessage.style.cssText = `
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        margin-right: 40px;
+        font-style: italic;
+    `;
+
+    chatMessages.appendChild(loadingMessage);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+    try {
+
+        const response = await fetch("/api/chat", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json",
+
+                "Authorization": `Bearer ${authToken}`
+
+            },
+
+            body: JSON.stringify({
+
+                message: message
+
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        // Remove loading message
+        loadingMessage.remove();
+
+
+        if (!response.ok) {
+
+            console.error("Chatbot API error:", data);
+
+            addChatMessage(
+
+                data.error ||
+                "Sorry, I couldn't process your request.",
+
+                "bot"
+
+            );
+
+            return;
+
+        }
+
+
+        addChatMessage(
+
+            data.reply ||
+            "I couldn't generate a response.",
+
+            "bot"
+
+        );
+
+
+    } catch (error) {
+
+        console.error("Chatbot request failed:", error);
+
+        loadingMessage.remove();
+
+        addChatMessage(
+
+            "Unable to connect to the chatbot.",
+
+            "bot"
+
+        );
+
+    } finally {
+
+        sendChatBtn.disabled = false;
+        chatInput.disabled = false;
+
+        chatInput.focus();
+
+    }
+
+}
+
+
+// Send button
+sendChatBtn.addEventListener(
+
+    "click",
+
+    sendChatMessage
+
+);
+
+
+// Press Enter to send
+chatInput.addEventListener("keydown", (event) => {
+
+    if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        sendChatMessage();
+
+    }
+
+});
+
+
+// Update chatbot visibility
+updateChatbotVisibility();

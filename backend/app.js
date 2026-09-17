@@ -56,11 +56,13 @@ app.get("/html/admin-login.html", (req, res) => {
 const appointmentRoutes = require('./routes/appointment');
 const doctorRoutes = require('./routes/doctors');
 const patientRoutes = require('./routes/patients');
+const chatRoutes = require('./routes/chat');
 
 // Mount API routes with /api prefix
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/patients', patientRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Admin Authentication Routes
 app.post('/api/admin/login', (req, res) => {

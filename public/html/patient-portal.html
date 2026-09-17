@@ -388,5 +388,108 @@
       updateLoadingBar(100);
     });
   </script>
+  <!-- AI Chatbot -->
+  <div id="chatbotContainer" style="
+     display: none;
+     position: fixed;
+     bottom: 90px;
+     right: 25px;
+     width: 350px;
+     max-width: calc(100vw - 30px);
+     background: white;
+     border-radius: 12px;
+     box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+     z-index: 9999;
+     overflow: hidden;
+  ">
+
+  <!-- Chatbot Header -->
+  <div style="
+    background: #007bff;
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  ">
+    <strong>🏥 HealthCare Plus AI</strong>
+
+    <button id="closeChatbotBtn"
+      style="
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      ">
+      
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div id="chatMessages" style="
+    height: 350px;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f8f9fa;
+  ">
+
+    <div style="
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    ">
+      Hello! I can help you with your hospital appointments.
+    </div>
+
+  </div>
+
+  <!-- Input -->
+  <div style="
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: white;
+  ">
+
+    <input
+      type="text"
+      id="chatInput"
+      class="form-control"
+      placeholder="Ask about your appointments..."
+      autocomplete="off"
+    />
+
+    <button
+      id="sendChatBtn"
+      class="btn btn-primary ms-2"
+    >
+      Send
+    </button>
+
+   </div>
+ </div>
+
+    <!-- Chatbot Button -->
+    <button id="openChatbotBtn"
+     style="
+       display: none;
+       position: fixed;
+       bottom: 25px;
+       right: 25px;
+       width: 60px;
+       height: 60px;
+       border-radius: 50%;
+       border: none;
+       background: #007bff;
+       color: white;
+       font-size: 25px;
+       box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+       cursor: pointer;
+       z-index: 9998;
+    "
+    title="Open AI Chatbot">
+
 </body>
 </html> 
