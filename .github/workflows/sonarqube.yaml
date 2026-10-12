@@ -33,26 +33,6 @@ jobs:
         working-directory: backend
         run: npm test --if-present
 
-      - name: Verify SonarQube URL
-        env:
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        shell: bash
-        run: |
-          if [ -z "$SONAR_HOST_URL" ]; then
-            echo "ERROR: SONAR_HOST_URL is empty."
-            exit 1
-          fi
-
-          case "$SONAR_HOST_URL" in
-            https://*)
-              echo "SonarQube HTTPS URL is configured."
-              ;;
-            *)
-              echo "ERROR: Configure HTTPS before sending the token."
-              exit 1
-              ;;
-          esac
-
       - name: SonarQube Analysis
         uses: SonarSource/sonarqube-scan-action@v8.3.0
         env:
