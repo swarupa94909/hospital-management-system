@@ -24,8 +24,9 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Run backend tests
+        working-directory: backend
+        run: npm test
 
       - name: Run Tests
         run: npm test --if-present
