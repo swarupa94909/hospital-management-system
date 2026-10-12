@@ -1,11 +1,11 @@
+
 {
   "name": "backend",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"No tests configured yet\"",
-  
-  }
+    "test": "echo \"No tests configured yet\""
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
